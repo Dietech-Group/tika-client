@@ -59,7 +59,11 @@ module Tika
     private
     
     def connection
-      @connection ||= Net::HTTP.new(host, port)
+      @connection if @connection
+      
+      @connection = Net::HTTP.new(host, port)
+      @connection.use_ssl = (port.to_i == 443)
+      @connection
     end
 
     def execute(request, opts={})
